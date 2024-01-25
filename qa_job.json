@@ -1,0 +1,38 @@
+{
+  "apiVersion": "batch/v1",
+  "kind": "Job",
+  "metadata": {
+    "name": "JOB-NAME"
+  },
+  "spec": {
+	"backoffLimit": 2,
+    "template": {
+      "spec": {
+        "restartPolicy": "Never",
+        "containers": [
+          {
+            "name": "job",
+            "image": "socialhousing-qa:latest",
+            "imagePullPolicy": "Never",
+            "volumeMounts": [
+		      {
+			    "name": "persistent-volume",
+                "mountPath": "/home/app/socialhousing/data",
+                "subPath": "data"	
+			  }
+			],
+			"args": ["job", "START-DATE", "PERIOD", "DATA-DIR"]
+          }
+        ],
+        "volumes": [
+		  {
+			"name": "persistent-volume",
+			"persistentVolumeClaim": {
+			  "claimName": "socialhousing" 
+			}
+		  }
+		]
+      }
+    }
+  }
+}
